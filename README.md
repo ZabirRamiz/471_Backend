@@ -10,18 +10,18 @@ holds the django-rest backend for the property management system
 4. pip install django-cors-headers
 
 # Basic terminal commands:
-*startproject*:
-django-admin startproject project_name
-*startapp*:
-python manage.py startapp app_name
-*run migrations*:
-python manage.py makemigrations
-python manage.py migrate
-*runserver*:
-python manage.py runserver
+1. *startproject*:
+- django-admin startproject project_name
+2. *startapp*:
+- python manage.py startapp app_name
+3. *run migrations*:
+- python manage.py makemigrations
+- python manage.py migrate
+4. *runserver*:
+- python manage.py runserver
 
 # Recommended Softwares
-XAMPP
-VS Code
-Postman
-GitHub Desktop
+1. XAMPP
+2. VS Code
+3. Postman
+4. GitHub Desktop
