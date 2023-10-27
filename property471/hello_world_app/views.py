@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.db import connection
 
 from .models import hello_world_model
 from .serializers import hello_worldSerializer
