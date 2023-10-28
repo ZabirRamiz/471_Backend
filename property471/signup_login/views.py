@@ -75,13 +75,13 @@ def signup(request):
 
     user.save(user_val)
     setLogin(user_val.user_id)
-    return HttpResponse("Signup Successful")
+    return JsonResponse({'status': 'Signup Success'}, status=201)
 
 
 @api_view(["PUT"])
 def logout(request):
     setLogout()
-    return HttpResponse("Logout Successful")
+    return JsonResponse({'status': 'Logout Success'}, status=201)
 
 
 @api_view(["PUT"])
@@ -91,6 +91,6 @@ def login(request):
 
     if checkpassword(user_id, password):
         setLogin(user_id)
-        return HttpResponse("Login Successful")
+        return JsonResponse({'status': 'Login Success'}, status=201)
 
-    return HttpResponse("Login Failed")
+    return JsonResponse({'status': 'Login Failed'}, status=400)
