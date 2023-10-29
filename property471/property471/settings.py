@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'hello_world_app',
+
+    'signup_login',
 ]
 
 MIDDLEWARE = [
