@@ -29,13 +29,15 @@ def createUser(n):
     else:
         return "user_"+str(n)
 
-
+# to make it more full proof- take id as argument and change using pk=id 
 def sessionInfo():
     session_val = session.objects.order_by('-id').first()
     session_Serializer = sessionSerializer(session_val)
     return JsonResponse(session_Serializer.data, safe=False)
 
 
+
+# to make it more full proof- take id as argument and change using pk=id 
 def setLogin(user_id):
     session_val = session()
 
@@ -46,6 +48,8 @@ def setLogin(user_id):
     sessionInfo()
 
 
+
+# to make it more full proof- take id as argument and change using pk=id 
 def setLogout():
     session_val = session.objects.order_by('-id').first()
     session_val.status = 'False'
