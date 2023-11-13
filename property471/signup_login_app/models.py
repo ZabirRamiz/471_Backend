@@ -18,11 +18,12 @@ class user(models.Model):
         return f"user_id: {self.user_id}, password: {self.password}"
     
 class session(models.Model):
+    session_id = models.AutoField(primary_key = True)
     user_id = models.ForeignKey(user, to_field = 'user_id', on_delete=models.CASCADE)
     status = models.CharField(default = "False", max_length=5)
 
     def __str__(self):
-        return f"session_id: {self.id}, {self.user_id}, status: {self.status}"
+        return f"session_id: {self.session_id}, {self.user_id}, status: {self.status}"
 
 
 class employee(models.Model):

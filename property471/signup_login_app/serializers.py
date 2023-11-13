@@ -9,7 +9,7 @@ class userSerializer(serializers.ModelSerializer):
 class sessionSerializer(serializers.ModelSerializer):
     class Meta():
         model = session
-        fields = ['id','user_id', 'status']
+        fields = ['session_id','user_id', 'status']
 
 class employeeSerializer(serializers.ModelSerializer):
     class Meta():

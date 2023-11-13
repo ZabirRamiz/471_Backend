@@ -16,7 +16,7 @@ from .serializers import *
 
 def createUser(n):
     s = ("user_" + str(n))
-    existing_user = "select user_id from signup_login_user where type = 'user' order by user_id asc"
+    existing_user = "select user_id from signup_login_app_user where type = 'user' order by user_id asc"
     user_tuple = ''
     with connection.cursor() as cursor:
         cursor.execute(existing_user)
@@ -32,7 +32,7 @@ def createUser(n):
 
 def createAgent(n):
     s = ("agent_" + str(n))
-    existing_agent = "select user_id from signup_login_user where type = 'agent' order by user_id asc"
+    existing_agent = "select user_id from signup_login_app_user where type = 'agent' order by user_id asc"
     agent_tuple = ''
     with connection.cursor() as cursor:
         cursor.execute(existing_agent)
@@ -48,7 +48,7 @@ def createAgent(n):
 
 def createSupport(n):
     s = ("support_" + str(n))
-    existing_support = "select user_id from signup_login_user where type = 'support' order by user_id asc"
+    existing_support = "select user_id from signup_login_app_user where type = 'support' order by user_id asc"
     support_tuple = ''
     with connection.cursor() as cursor:
         cursor.execute(existing_support)
@@ -63,7 +63,7 @@ def createSupport(n):
 
 
 def sessionInfo(session_id):
-    session_val = session.objects.get(id=f"{session_id}")
+    session_val = session.objects.get(session_id=f"{session_id}")
     session_Serializer = sessionSerializer(session_val)
     return JsonResponse(session_Serializer.data, safe=False)
 
@@ -75,7 +75,7 @@ def setLogin(user_id):
     session_val.status = 'True'
     session.save(session_val)
 
-    session_id = session.objects.order_by('-id').first().id
+    session_id = session.objects.order_by('-session_id').first().session_id
     user_val = user.objects.get(user_id=f'{user_id}')
     user_val.session_id = session_id
 
@@ -86,7 +86,7 @@ def setLogin(user_id):
 
 def setLogout(user_id):
     session_val = session.objects.filter(
-        user_id=f'{user_id}').order_by('-id')[0]
+        user_id=f'{user_id}').order_by('-session_id')[0]
     session_val.status = 'False'
     session.save(session_val)
 

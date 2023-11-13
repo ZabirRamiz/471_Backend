@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 
     'hello_world_app',
 
-    'signup_login',
+    'signup_login_app',
+    'property_app'
 ]
 
 MIDDLEWARE = [
