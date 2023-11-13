@@ -4,9 +4,9 @@ from .models import *
 class userSerializer(serializers.ModelSerializer):
     class Meta():
         model = user
-        fields = ['user_id','password','type','name','email','address','phone']
+        fields = ['user_id','password','type','name','email','address','phone', 'session_id']
 
 class sessionSerializer(serializers.ModelSerializer):
     class Meta():
         model = session
-        fields = ['user_id', 'status']
+        fields = ['id','user_id', 'status']

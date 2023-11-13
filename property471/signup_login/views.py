@@ -30,8 +30,8 @@ def createUser(n):
         return "user_"+str(n)
 
 # to make it more full proof- take id as argument and change using pk=id 
-def sessionInfo():
-    session_val = session.objects.order_by('-id').first()
+def sessionInfo(session_id):
+    session_val = session.objects.get(id = f"{session_id}")
     session_Serializer = sessionSerializer(session_val)
     return JsonResponse(session_Serializer.data, safe=False)
 
@@ -43,15 +43,21 @@ def setLogin(user_id):
 
     session_val.user_id_id = user_id
     session_val.status = 'True'
-    
     session.save(session_val)
-    sessionInfo()
+
+    session_id = session.objects.order_by('-id').first().id 
+    user_val = user.objects.get(user_id = f'{user_id}')
+    user_val.session_id = session_id
+    
+    user.save(user_val)
+
+    sessionInfo(session_id)
 
 
 
 # to make it more full proof- take id as argument and change using pk=id 
-def setLogout():
-    session_val = session.objects.order_by('-id').first()
+def setLogout(user_id):
+    session_val = session.objects.filter(user_id=f'{user_id}').order_by('-id')[0]  
     session_val.status = 'False'
     session.save(session_val)
 
@@ -84,11 +90,12 @@ def signup(request):
 
 @api_view(["PUT"])
 def logout(request):
-    setLogout()
+    user_id = request.data['user_id']
+    setLogout(user_id)
     return JsonResponse({'status': 'Logout Success'}, status=201)
 
 
-@api_view(["PUT"])
+@api_view(["POST"])
 def login(request):
     user_id = request.data['user_id']
     password = request.data['password']
