@@ -16,7 +16,7 @@ from .serializers import *
 
 def createUser(n):
     s = ("user_" + str(n))
-    existing_user = 'select user_id from signup_login_user order by user_id asc'
+    existing_user = "select user_id from signup_login_user where type = 'user' order by user_id asc"
     user_tuple = ''
     with connection.cursor() as cursor:
         cursor.execute(existing_user)
@@ -29,15 +29,45 @@ def createUser(n):
     else:
         return "user_"+str(n)
 
-# to make it more full proof- take id as argument and change using pk=id 
+
+def createAgent(n):
+    s = ("agent_" + str(n))
+    existing_agent = "select user_id from signup_login_user where type = 'agent' order by user_id asc"
+    agent_tuple = ''
+    with connection.cursor() as cursor:
+        cursor.execute(existing_agent)
+        agent_tuple = list(cursor.fetchall())
+
+    if (s,) in agent_tuple:
+        s = createAgent(n+1)
+        return s
+
+    else:
+        return "agent_"+str(n)
+
+
+def createSupport(n):
+    s = ("support_" + str(n))
+    existing_support = "select user_id from signup_login_user where type = 'support' order by user_id asc"
+    support_tuple = ''
+    with connection.cursor() as cursor:
+        cursor.execute(existing_support)
+        support_tuple = list(cursor.fetchall())
+
+    if (s,) in support_tuple:
+        s = createSupport(n+1)
+        return s
+
+    else:
+        return "support_"+str(n)
+
+
 def sessionInfo(session_id):
-    session_val = session.objects.get(id = f"{session_id}")
+    session_val = session.objects.get(id=f"{session_id}")
     session_Serializer = sessionSerializer(session_val)
     return JsonResponse(session_Serializer.data, safe=False)
 
 
-
-# to make it more full proof- take id as argument and change using pk=id 
 def setLogin(user_id):
     session_val = session()
 
@@ -45,19 +75,18 @@ def setLogin(user_id):
     session_val.status = 'True'
     session.save(session_val)
 
-    session_id = session.objects.order_by('-id').first().id 
-    user_val = user.objects.get(user_id = f'{user_id}')
+    session_id = session.objects.order_by('-id').first().id
+    user_val = user.objects.get(user_id=f'{user_id}')
     user_val.session_id = session_id
-    
+
     user.save(user_val)
 
     sessionInfo(session_id)
 
 
-
-# to make it more full proof- take id as argument and change using pk=id 
 def setLogout(user_id):
-    session_val = session.objects.filter(user_id=f'{user_id}').order_by('-id')[0]  
+    session_val = session.objects.filter(
+        user_id=f'{user_id}').order_by('-id')[0]
     session_val.status = 'False'
     session.save(session_val)
 
@@ -88,7 +117,7 @@ def signup(request):
     return JsonResponse({'status': 'Signup Success'}, status=201)
 
 
-@api_view(["PUT"])
+@api_view(["POST"])
 def logout(request):
     user_id = request.data['user_id']
     setLogout(user_id)
@@ -105,3 +134,59 @@ def login(request):
         return JsonResponse({'status': 'Login Success'}, status=201)
 
     return JsonResponse({'status': 'Login Failed'}, status=400)
+
+
+def create_agent(request):
+    agent_val = user()
+    entries = len(user.objects.filter(user_id__startswith='agent'))+1
+
+    agent_val.user_id = createAgent(entries)
+    agent_val.name = request.data['name']
+    agent_val.password = request.data['password']
+    agent_val.type = request.data['type']
+    agent_val.email = request.data['email']
+    agent_val.address = request.data['address']
+    agent_val.phone = request.data['phone']
+
+    user.save(agent_val)
+
+    return agent_val.user_id
+
+
+def create_support(request):
+    support_val = user()
+    entries = len(user.objects.filter(user_id__startswith='support'))+1
+
+    support_val.user_id = createSupport(entries)
+    support_val.name = request.data['name']
+    support_val.password = request.data['password']
+    support_val.type = request.data['type']
+    support_val.email = request.data['email']
+    support_val.address = request.data['address']
+    support_val.phone = request.data['phone']
+
+    user.save(support_val)
+
+    return support_val.user_id
+
+
+@api_view(["POST"])
+def create_employee(request):
+    if request.data['type'] == 'agent':
+        employee_id = create_agent(request)
+    elif request.data['type'] == 'support':
+        employee_id = create_support(request)
+
+    employee_val = employee()
+
+    employee_val.employee_id = employee_id
+    employee_val.name = request.data['name']
+    employee_val.password = request.data['password']
+    employee_val.type = request.data['type']
+    employee_val.email = request.data['email']
+    employee_val.address = request.data['address']
+    employee_val.phone = request.data['phone']
+
+    employee.save(employee_val)
+
+    return JsonResponse({'status': 'Successfully Created Employee'}, status=201)

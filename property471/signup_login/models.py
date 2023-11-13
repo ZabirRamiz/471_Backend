@@ -23,4 +23,18 @@ class session(models.Model):
 
     def __str__(self):
         return f"session_id: {self.id}, {self.user_id}, status: {self.status}"
+
+
+class employee(models.Model):
+    employee_id = models.CharField(max_length=50, primary_key=True)
+    password = models.CharField(max_length=50)
+    type = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
+    email = models.CharField(max_length=50)
+    address = models.CharField(max_length=50)
+    phone = models.CharField(max_length=50)
+
     
+
+    def __str__(self):
+        return f"employee_id: {self.employee_id}, password: {self.password}"
