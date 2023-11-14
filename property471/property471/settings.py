@@ -43,8 +43,10 @@ INSTALLED_APPS = [
 
     'hello_world_app',
 
+    # 'get_data_app',
     'signup_login_app',
-    'property_app'
+    'property_app',
+
 ]
 
 MIDDLEWARE = [

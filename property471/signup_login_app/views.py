@@ -14,8 +14,8 @@ from .serializers import *
 # Create your views here.
 
 
-def createUser(n):
-    s = ("user_" + str(n))
+def createUser(entries):
+    s = ("user_" + str(entries))
     existing_user = "select user_id from signup_login_app_user where type = 'user' order by user_id asc"
     user_tuple = ''
     with connection.cursor() as cursor:
@@ -23,15 +23,15 @@ def createUser(n):
         user_tuple = list(cursor.fetchall())
 
     if (s,) in user_tuple:
-        s = createUser(n+1)
+        s = createUser(entries+1)
         return s
 
     else:
-        return "user_"+str(n)
+        return "user_"+str(entries)
 
 
-def createAgent(n):
-    s = ("agent_" + str(n))
+def createAgent(entries):
+    s = ("agent_" + str(entries))
     existing_agent = "select user_id from signup_login_app_user where type = 'agent' order by user_id asc"
     agent_tuple = ''
     with connection.cursor() as cursor:
@@ -39,27 +39,28 @@ def createAgent(n):
         agent_tuple = list(cursor.fetchall())
 
     if (s,) in agent_tuple:
-        s = createAgent(n+1)
+        s = createAgent(entries+1)
         return s
 
     else:
-        return "agent_"+str(n)
+        return "agent_"+str(entries)
 
 
-def createSupport(n):
-    s = ("support_" + str(n))
-    existing_support = "select user_id from signup_login_app_user where type = 'support' order by user_id asc"
+def createSupport(entries):
+    s = ("support_" + str(entries))
+    existing_support = "select user_id from signup_login_app_user where type != 'agent' and type != 'user' order by user_id asc"
+
     support_tuple = ''
     with connection.cursor() as cursor:
         cursor.execute(existing_support)
         support_tuple = list(cursor.fetchall())
 
     if (s,) in support_tuple:
-        s = createSupport(n+1)
+        s = createSupport(entries+1)
         return s
 
     else:
-        return "support_"+str(n)
+        return "support_"+str(entries)
 
 
 def sessionInfo(session_id):
@@ -83,6 +84,12 @@ def setLogin(user_id):
 
     sessionInfo(session_id)
 
+    
+
+    user.objects.get(user_id = f'{user_id}')
+    user_Serializer = userSerializer(user_val)
+    message = 'Login Success'
+    return (message, user_Serializer)
 
 def setLogout(user_id):
     session_val = session.objects.filter(
@@ -99,6 +106,10 @@ def checkpassword(user_id, password):
 
     return False
 
+def checkuser(user_id_to_check):
+    user_exists = user.objects.filter(user_id=user_id_to_check).exists()
+
+    return user_exists
 
 @api_view(["POST"])
 def signup(request):
@@ -113,8 +124,10 @@ def signup(request):
     user_val.phone = request.data['phone']
 
     user.save(user_val)
-    setLogin(user_val.user_id)
-    return JsonResponse({'status': 'Signup Success'}, status=201)
+    
+    # return Response(setLogin(user_val.user_id))
+    login_message, user_Serializer = setLogin(user_val.user_id)
+    return JsonResponse({'message': 'Signup Success', 'data': user_Serializer.data}, status=201)
 
 
 @api_view(["POST"])
@@ -129,11 +142,15 @@ def login(request):
     user_id = request.data['user_id']
     password = request.data['password']
 
-    if checkpassword(user_id, password):
-        setLogin(user_id)
-        return JsonResponse({'status': 'Login Success'}, status=201)
+    if checkuser(user_id):    
+        if checkpassword(user_id, password):
+            message, user_Serializer = setLogin(user_id)
 
-    return JsonResponse({'status': 'Login Failed'}, status=400)
+            # user_Serializer = userSerializer(user_val)
+            return JsonResponse({'message': message, 'data': user_Serializer.data}, status=201)
+            # return user_Serializer
+
+    return JsonResponse({'error': 'Incorrect Username Or Password'}, status=400)
 
 
 def create_agent(request):
@@ -172,9 +189,10 @@ def create_support(request):
 
 @api_view(["POST"])
 def create_employee(request):
+    print(request.data['name'])
     if request.data['type'] == 'agent':
         employee_id = create_agent(request)
-    elif request.data['type'] == 'support':
+    elif request.data['type'] != 'agent':
         employee_id = create_support(request)
 
     employee_val = employee()
