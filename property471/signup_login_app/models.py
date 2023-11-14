@@ -14,8 +14,8 @@ class user(models.Model):
 
     session_id = models.CharField(default = -1, max_length=50)
 
-    def __str__(self):
-        return f"user_id: {self.user_id}, password: {self.password}"
+    # def __str__(self):
+    #     return f"user_id: {self.user_id}, password: {self.password}"
     
 class session(models.Model):
     session_id = models.AutoField(primary_key = True)
