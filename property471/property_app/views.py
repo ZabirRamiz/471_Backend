@@ -53,7 +53,10 @@ def create_property(request):
 
     property.save(property_val)
 
-    return JsonResponse({'message': 'Property Created'}, status = 201)
+
+    property_Serializer = propertySerializer(property_val)
+
+    return JsonResponse({'message': 'Property Created', 'data': property_Serializer.data}, status = 201)
 
 
 
