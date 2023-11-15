@@ -84,12 +84,11 @@ def setLogin(user_id):
 
     sessionInfo(session_id)
 
-    
-
-    user.objects.get(user_id = f'{user_id}')
+    user.objects.get(user_id=f'{user_id}')
     user_Serializer = userSerializer(user_val)
     message = 'Login Success'
     return (message, user_Serializer)
+
 
 def setLogout(user_id):
     session_val = session.objects.filter(
@@ -106,10 +105,12 @@ def checkpassword(user_id, password):
 
     return False
 
+
 def checkuser(user_id_to_check):
     user_exists = user.objects.filter(user_id=user_id_to_check).exists()
 
     return user_exists
+
 
 @api_view(["POST"])
 def signup(request):
@@ -124,8 +125,7 @@ def signup(request):
     user_val.phone = request.data['phone']
 
     user.save(user_val)
-    
-    # return Response(setLogin(user_val.user_id))
+
     login_message, user_Serializer = setLogin(user_val.user_id)
     return JsonResponse({'message': 'Signup Success', 'data': user_Serializer.data}, status=201)
 
@@ -142,13 +142,11 @@ def login(request):
     user_id = request.data['user_id']
     password = request.data['password']
 
-    if checkuser(user_id):    
+    if checkuser(user_id):
         if checkpassword(user_id, password):
             message, user_Serializer = setLogin(user_id)
 
-            # user_Serializer = userSerializer(user_val)
             return JsonResponse({'message': message, 'data': user_Serializer.data}, status=201)
-            # return user_Serializer
 
     return JsonResponse({'error': 'Incorrect Username Or Password'}, status=400)
 
