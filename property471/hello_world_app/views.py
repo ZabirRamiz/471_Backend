@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.db import connection
 
 from .models import hello_world_model
 from .serializers import hello_worldSerializer
@@ -15,12 +16,12 @@ def first_function(request):
     if request.method == "POST":
         query = hello_world_model.objects.filter(hello = request.data['hello'])
         serializer = hello_worldSerializer(query, many = True)
-
-        return JsonResponse(serializer.data, safe = False)
+        out = serializer.data
+        return JsonResponse(out, safe = False)
     
     elif request.method == "GET":
         query = hello_world_model.objects.all()
         serializer = hello_worldSerializer(query, many = True)
-
-        return JsonResponse(serializer.data, safe = False)
+        out = serializer.data
+        return JsonResponse(out, safe = False)
         
