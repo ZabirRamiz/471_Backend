@@ -11,7 +11,6 @@ from rest_framework.parsers import JSONParser
 
 from .models import *
 from .serializers import *
-from signup_login_app.models import user
 # Create your views here.
 
 
@@ -31,8 +30,8 @@ def createProperty(entries):
         return "property_"+str(entries)
 
 
-def assign_owner(owner_id):
-    user_instance = user.objects.get(user_id = owner_id)
+def assign_owner(user_id):
+    user_instance = user.objects.get(user_id = user_id)
 
     return user_instance
 
@@ -41,11 +40,11 @@ def assign_owner(owner_id):
 def create_property(request):
     property_val = property()
     entries = len(property.objects.filter(property_id__startswith='property'))+1
-    owner_id = request.data['user_id']
+    user_id = request.data['user_id']
 
 
     property_val.property_id = createProperty(entries)
-    property_val.owner_id = assign_owner(owner_id)
+    property_val.user_id = assign_owner(user_id)
     property_val.property_location = request.data['property_location']
     property_val.property_size = request.data['property_size']
     property_val.property_name = request.data['property_name']

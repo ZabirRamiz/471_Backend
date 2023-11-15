@@ -5,7 +5,7 @@ from signup_login_app.models import user, employee
 class property(models.Model):
     property_id = models.CharField(max_length=50, primary_key = True)
 
-    owner_id = models.ForeignKey(user,to_field='user_id', related_name = 'property_owner', on_delete=models.CASCADE)
+    user_id = models.ForeignKey(user,to_field='user_id', related_name = 'property_owner', on_delete=models.CASCADE)
 
     # # had to add the related_name attribute to distinguish the foreign keys to avoid clash
     agent_id = models.ForeignKey(employee, to_field='employee_id', related_name = 'property_agent',  on_delete=models.CASCADE, null = True)
