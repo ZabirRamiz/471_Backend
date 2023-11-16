@@ -37,5 +37,9 @@ urlpatterns = [
     # function paths
     path('hello_world_function/',include('hello_world_app.urls')),
     # original backend paths
-    path('api/signup_login/', include('signup_login.urls')),
+    path('api/signup_login/', include('signup_login_app.urls')),
+    path('api/property/', include('property_app.urls')),
+    path('api/hire_employee/', include('hire_employee_app.urls')),
+    # path('api/get_data/', include('get_data_app.urls')),
+    path('api/edit_access/', include('edit_access_app.urls'))
 ]
