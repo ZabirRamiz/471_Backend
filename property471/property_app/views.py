@@ -29,14 +29,35 @@ def createProperty(entries):
     else:
         return "property_"+str(entries)
 
-  
+
+def assign_owner(user_id):
+    user_instance = user.objects.get(user_id = user_id)
+
+    return user_instance
 
 
 @api_view(["POST"])
 def create_property(request):
     property_val = property()
     entries = len(property.objects.filter(property_id__startswith='property'))+1
+    user_id = request.data['user_id']
 
 
     property_val.property_id = createProperty(entries)
+    property_val.user_id = assign_owner(user_id)
+    property_val.property_location = request.data['property_location']
+    property_val.property_size = request.data['property_size']
+    property_val.property_name = request.data['property_name']
+    property_val.property_price = request.data['property_price']
+
+    property.save(property_val)
+
+
+    property_Serializer = propertySerializer(property_val)
+
+    return JsonResponse({'message': 'Property Created', 'data': property_Serializer.data}, status = 201)
+
+
+
     
+

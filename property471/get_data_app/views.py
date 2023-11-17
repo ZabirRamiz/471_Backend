@@ -13,6 +13,16 @@ from .models import *
 from .serializers import *
 # Create your views here.
 
+
 @api_view(['GET'])
 def user_data(request):
     pass
+
+
+@api_view(['GET'])
+def employee_data(request):
+    all_employees = employee.objects.all()
+
+    all_employees_Serializer = employeeSerializer(all_employees, many = True)
+
+    return JsonResponse({'message': 'This contains all the data of the employee table', 'data': all_employees_Serializer.data}, safe = False)
