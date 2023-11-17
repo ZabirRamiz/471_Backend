@@ -24,6 +24,15 @@ def user_data(request):
 
 
 @api_view(['GET'])
+def property_data(request):
+    all_properties = property.objects.all()
+
+    all_properties_Serializer = propertySerializer(all_properties, many=True)
+
+    return JsonResponse({'message': 'This contains all the data of the property table', 'data': all_properties_Serializer.data}, safe=False)
+
+
+@api_view(['GET'])
 def employee_data(request):
     all_employees = employee.objects.all()
 
