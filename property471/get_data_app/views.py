@@ -16,13 +16,17 @@ from .serializers import *
 
 @api_view(['GET'])
 def user_data(request):
-    pass
+    all_users = user.objects.all()
+
+    all_users_Serialzer = userSerializer(all_users, many=True)
+
+    return JsonResponse({'message': 'This contains all the data of the user table', 'data': all_users_Serialzer.data}, safe=False)
 
 
 @api_view(['GET'])
 def employee_data(request):
     all_employees = employee.objects.all()
 
-    all_employees_Serializer = employeeSerializer(all_employees, many = True)
+    all_employees_Serializer = employeeSerializer(all_employees, many=True)
 
-    return JsonResponse({'message': 'This contains all the data of the employee table', 'data': all_employees_Serializer.data}, safe = False)
+    return JsonResponse({'message': 'This contains all the data of the employee table', 'data': all_employees_Serializer.data}, safe=False)

@@ -9,4 +9,4 @@ class userSerializer(serializers.ModelSerializer):
 class employeeSerializer(serializers.ModelSerializer):
     class Meta():
         model = employee
-        fields = ['employee_id', 'password', 'type', 'name', 'email', 'address', 'phone']
+        fields = '__all__'
