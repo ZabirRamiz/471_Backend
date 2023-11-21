@@ -106,6 +106,21 @@ def user_property(request):
 
 
 @api_view(["POST"])
+def agent_property(request):
+    agent_properties = property.objects.filter(agent_id=f"{request.data['agent_id']}")
+
+    agent_properties_Serializer = propertySerializer(agent_properties, many=True)
+
+    return JsonResponse(
+        {
+            "message": f"This returns all the properties of the agent: {request.data['agent_id']}",
+            "data": agent_properties_Serializer.data,
+        },
+        safe=False,
+    )
+
+
+@api_view(["POST"])
 def single_user(request):
     single_user = user.objects.get(user_id=f"{request.data['user_id']}")
     single_user_Serializer = userSerializer(single_user)
@@ -114,6 +129,34 @@ def single_user(request):
         {
             "message": f"This returns all the info of the user: {request.data['user_id']}",
             "data": single_user_Serializer.data,
+        },
+        safe=False,
+    )
+
+
+@api_view(["POST"])
+def single_property(request):
+    single_property = property.objects.get(property_id=f"{request.data['property_id']}")
+    single_property_Serializer = propertySerializer(single_property)
+
+    return JsonResponse(
+        {
+            "message": f"This returns all the info of the property: {request.data['property_id']}",
+            "data": single_property_Serializer.data,
+        },
+        safe=False,
+    )
+
+
+@api_view(["POST"])
+def single_employee(request):
+    single_employee = employee.objects.get(employee_id=f"{request.data['employee_id']}")
+    single_employee_Serializer = employeeSerializer(single_employee)
+
+    return JsonResponse(
+        {
+            "message": f"This returns all the info of the employee: {request.data['employee_id']}",
+            "data": single_employee_Serializer.data,
         },
         safe=False,
     )
