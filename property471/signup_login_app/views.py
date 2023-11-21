@@ -87,7 +87,7 @@ def setLogin(user_id):
 
     user.objects.get(user_id=f"{user_id}")
     user_Serializer = userSerializer(user_val)
-    message = "Login Success"
+    message = f"Login Success of {user_id}"
     return (message, user_Serializer)
 
 
@@ -130,7 +130,11 @@ def signup(request):
 
     login_message, user_Serializer = setLogin(user_val.user_id)
     return JsonResponse(
-        {"message": "Signup Success", "data": user_Serializer.data}, status=201
+        {
+            "message": f"Signup Success of {user_val.user_id}",
+            "data": user_Serializer.data,
+        },
+        status=201,
     )
 
 
@@ -138,7 +142,7 @@ def signup(request):
 def logout(request):
     user_id = request.data["user_id"]
     setLogout(user_id)
-    return JsonResponse({"status": "Logout Success"}, status=201)
+    return JsonResponse({"status": f"Logout Success of {user_id}"}, status=201)
 
 
 @api_view(["POST"])
@@ -211,4 +215,6 @@ def create_employee(request):
 
     employee.save(employee_val)
 
-    return JsonResponse({"status": "Successfully Created Employee"}, status=201)
+    return JsonResponse(
+        {"status": f"Successfully Created Employee: {employee_id}"}, status=201
+    )
