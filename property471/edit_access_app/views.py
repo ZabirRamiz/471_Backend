@@ -21,9 +21,10 @@ from signup_login_app.models import employee
 
 # Users can edit their info ( for buyers and sellers )
 
+
 @api_view(["POST"])
 def user_edit(request):
-    info = user.objects.get(user_id=request.data['user_id'])
+    info = user.objects.get(user_id=request.data["user_id"])
 
     old_dic = {
         "name": info.name,
@@ -34,21 +35,21 @@ def user_edit(request):
     }
 
     new_dic = {
-        "name": request.data['name'],
-        "password": request.data['password'],
-        "email": request.data['email'],
-        "address": request.data['address'],
-        "phone": request.data['phone'],
+        "name": request.data["name"],
+        "password": request.data["password"],
+        "email": request.data["email"],
+        "address": request.data["address"],
+        "phone": request.data["phone"],
     }
 
-    attributes_to_check = ['name', 'password', 'email', 'address', 'phone']
+    attributes_to_check = ["name", "password", "email", "address", "phone"]
 
     for attribute in attributes_to_check:
-        if new_dic[f'{attribute}'] == '':
-            setattr(info, attribute, old_dic[f'{attribute}'])
+        if new_dic[f"{attribute}"] == "":
+            setattr(info, attribute, old_dic[f"{attribute}"])
         else:
-            setattr(info, attribute, new_dic[f'{attribute}'])
+            setattr(info, attribute, new_dic[f"{attribute}"])
 
     user.save(info)
 
-    return JsonResponse({'message': 'edit success'}, status=201)
+    return JsonResponse({"message": "edit success"}, status=201)

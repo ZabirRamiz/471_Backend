@@ -3,20 +3,35 @@ from .models import *
 
 
 class userSerializer(serializers.ModelSerializer):
-    class Meta():
+    class Meta:
         model = user
-        fields = ['user_id', 'password', 'type', 'name',
-                  'email', 'address', 'phone', 'session_id']
+        fields = [
+            "user_id",
+            "password",
+            "type",
+            "name",
+            "email",
+            "address",
+            "phone",
+            "session_id",
+        ]
 
 
 class sessionSerializer(serializers.ModelSerializer):
-    class Meta():
+    class Meta:
         model = session
-        fields = ['session_id', 'user_id', 'status']
+        fields = ["session_id", "user_id", "status"]
 
 
 class employeeSerializer(serializers.ModelSerializer):
-    class Meta():
+    class Meta:
         model = employee
-        fields = ['employee_id', 'password', 'type',
-                  'name', 'email', 'address', 'phone']
+        fields = [
+            "employee_id",
+            "password",
+            "type",
+            "name",
+            "email",
+            "address",
+            "phone",
+        ]

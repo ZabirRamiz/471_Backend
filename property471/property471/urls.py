@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path,include
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 # import the ViewSets
@@ -28,18 +28,18 @@ router = DefaultRouter()
  router.register('url_name',ViewSet_name) 
  each time
 """
-router.register('hello_worldViewSet_url', hello_worldViewSet)
+router.register("hello_worldViewSet_url", hello_worldViewSet)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     # ViewSet paths
-    path('hello_world_api/', include(router.urls)),
+    path("hello_world_api/", include(router.urls)),
     # function paths
-    path('hello_world_function/',include('hello_world_app.urls')),
+    path("hello_world_function/", include("hello_world_app.urls")),
     # original backend paths
-    path('api/signup_login/', include('signup_login_app.urls')),
-    path('api/property/', include('property_app.urls')),
-    path('api/hire_employee/', include('hire_employee_app.urls')),
-    path('api/get_data/', include('get_data_app.urls')),
-    path('api/edit_access/', include('edit_access_app.urls'))
+    path("api/signup_login/", include("signup_login_app.urls")),
+    path("api/property/", include("property_app.urls")),
+    path("api/hire_employee/", include("hire_employee_app.urls")),
+    path("api/get_data/", include("get_data_app.urls")),
+    path("api/edit_access/", include("edit_access_app.urls")),
 ]
