@@ -14,6 +14,7 @@ class userSerializer(serializers.ModelSerializer):
             "address",
             "phone",
             "session_id",
+            "user_image",
         ]
 
 
