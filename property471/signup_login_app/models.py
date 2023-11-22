@@ -1,7 +1,8 @@
 from django.db import models
 
 # Create your models here.
-
+def upload_to(instance, filename):
+    return 'media/{filename}'.format(filename = filename)
 
 class user(models.Model):
     user_id = models.CharField(max_length=50, primary_key=True)
@@ -14,8 +15,13 @@ class user(models.Model):
 
     session_id = models.CharField(default=-1, max_length=50)
 
+    user_image = models.ImageField(upload_to='user_image', default='media/stock_user.jpg')
+    # user_image = models.CharField(null=True, max_length=50)
     # def __str__(self):
     #     return f"user_id: {self.user_id}, password: {self.password}"
+    def __str__(self):
+        return self.user_image
+    
 
 
 class session(models.Model):
