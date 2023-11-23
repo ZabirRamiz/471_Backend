@@ -32,6 +32,7 @@ def user_edit(request):
         "address": info.address,
         "phone": info.phone,
         "user_image": info.user_image,
+        "user_image_path": info.user_image_path,
     }
     # print('--------------------------dlfsakjladksjf====================')
 
@@ -48,6 +49,17 @@ def user_edit(request):
     #     user.save(user_image_val)
     #     local_path = info.user_image_val.path
     # print(" ------------------------------------------------ ")
+    try:
+        image = request.FILES["user_image"]
+    except:
+        image = "default"
+    if image != "default":
+        print("------------------------------")
+        print(image)
+        image_name = image.name
+        image_path = f'/user_image/{image_name}'
+    else:
+        image_path = ""
     # print(local_path)
     new_dic = {
         "name": request.data["name"],
@@ -56,9 +68,11 @@ def user_edit(request):
         "address": request.data["address"],
         "phone": request.data["phone"],
         "user_image": request.data["user_image"],
+        "user_image_path" : image_path
+        
     }
 
-    attributes_to_check = ["name", "password", "email", "address", "phone", "user_image"]
+    attributes_to_check = ["name", "password", "email", "address", "phone", "user_image", "user_image_path"]
 
     for attribute in attributes_to_check:
         if new_dic[f"{attribute}"] == "":
@@ -67,16 +81,15 @@ def user_edit(request):
             setattr(info, attribute, new_dic[f"{attribute}"])
 
     user.save(info)
-    user_val = user.objects.get(user_id = request.data['user_id'])
-    user_Serializer = userSerializer(user_val)
     # image_name = request.data['user_image']
     # file_path = r"C:\Users\Zabir\Desktop\BRAC\471\project\471_Backend\property471\media\user_image"
-    image_name = request.FILES["user_image"].name.replace(' ', "_")
-    image_path = f'/user_image/{image_name}'
     # full_path = f"{file_path}\{image_name}"
 
+
     # print(full_path)
+    user_val = user.objects.get(user_id = request.data['user_id'])
+    user_Serializer = userSerializer(user_val)
  
-    return JsonResponse({"message": "edit success", 'data': user_Serializer.data, 'user_image_path': image_path }, status=201)
+    return JsonResponse({"message": "edit success", 'data': user_Serializer.data}, status=201)
 
 
