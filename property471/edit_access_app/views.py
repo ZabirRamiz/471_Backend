@@ -71,9 +71,12 @@ def user_edit(request):
     user_Serializer = userSerializer(user_val)
     # image_name = request.data['user_image']
     # file_path = r"C:\Users\Zabir\Desktop\BRAC\471\project\471_Backend\property471\media\user_image"
-
+    image_name = request.FILES["user_image"].name.replace(' ', "_")
+    image_path = f'/user_image/{image_name}'
     # full_path = f"{file_path}\{image_name}"
 
     # print(full_path)
  
-    return JsonResponse({"message": "edit success", 'data': user_Serializer.data}, status=201)
+    return JsonResponse({"message": "edit success", 'data': user_Serializer.data, 'user_image_path': image_path }, status=201)
+
+

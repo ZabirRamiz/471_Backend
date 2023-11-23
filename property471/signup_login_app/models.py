@@ -16,6 +16,7 @@ class user(models.Model):
     session_id = models.CharField(default=-1, max_length=50)
 
     user_image = models.ImageField(upload_to='user_image', default='media/stock_user.jpg')
+    # user_image = models.ImageField(null = True)
     # user_image = models.CharField(null=True, max_length=50)
     # def __str__(self):
     #     return f"user_id: {self.user_id}, password: {self.password}"
