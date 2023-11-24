@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "property_app",
     "hire_employee_app",
     "edit_access_app",
+    "marketplace_app",
 ]
 
 MIDDLEWARE = [
