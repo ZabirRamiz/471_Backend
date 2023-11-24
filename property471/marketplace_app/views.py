@@ -24,3 +24,12 @@ def add_to_marketplace(request):
     property_Serializer = propertySerializer(property_val)
 
     return JsonResponse({"message": "updated property status to - for sale", "data": property_Serializer.data}, status = 201)
+
+
+@api_view(["GET"])
+def marketplace_properties(request):
+    marketplace_val = property.objects.filter(market_status = "for sale")
+
+    marketplace_Serializer = propertySerializer(marketplace_val, many = True)
+
+    return JsonResponse({"message": "shows all the properties with status - for sale", "data": marketplace_Serializer.data}, status = 201)
