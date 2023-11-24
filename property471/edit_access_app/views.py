@@ -59,26 +59,28 @@ def user_edit(request):
 
 @api_view(["POST"])
 def employee_edit(request):
-    info = employee.objects.get(user_id=request.data['employee_id'])
+    info = employee.objects.get(employee_id=request.data['employee_id'])
     
     old_dic = {
+        "name":info.name,
         "password": info.password,
-        "type": info.type,
+        #"type": info.type,
         "email": info.email,
         "address": info.address,
         "phone": info.phone,
     }
 
     new_dic = {
+        "name":request.data['name'],
         "password" : request.data['password'],
-        "type" : request.data['type'],
+        #"type" : request.data['type'],
         "email" : request.data['email'],
         "address" : request.data['address'],
         "phone" : request.data['phone'],
     }
 
 
-    attributes_to_check = ['password', 'type','email', 'address', 'phone']
+    attributes_to_check = ['name','password','email', 'address', 'phone']
 
     for attribute in attributes_to_check:
         if new_dic[f'{attribute}'] == '':
@@ -87,7 +89,7 @@ def employee_edit(request):
             setattr(info, attribute, new_dic[f'{attribute}'])
             
     employee.save(info)
-    user.save(info)
+    #user.save(info)
     
     return JsonResponse({'message': 'edit success'}, status = 201)
 

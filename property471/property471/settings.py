@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'signup_login_app',
     'property_app',
     'edit_access_app',
-    'payment'
+    'payment_app'
 ]
 
 MIDDLEWARE = [
