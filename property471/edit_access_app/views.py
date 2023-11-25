@@ -34,25 +34,12 @@ def user_edit(request):
         "user_image": info.user_image,
         "user_image_path": info.user_image_path,
     }
-    # print('--------------------------dlfsakjladksjf====================')
-
-    # user_image = request.FILES["user_image"]
-    # print(user_image.name)
-    # if user_image:
-    #     with open("images/" + user_image.name, "wb") as f:
-    #         for chunk in user_image.chunks():
-    #             f.write(chunk)
-    # user_image = request.FILES.get('user_image')
-    # if user_image:
-    #     user_image_val = info.user_image
-    #     user_image_val = user_image
-    #     user.save(user_image_val)
-    #     local_path = info.user_image_val.path
-    # print(" ------------------------------------------------ ")
+    
     try:
         image = request.FILES["user_image"]
     except:
         image = "default"
+
     if image != "default":
         print("------------------------------")
         print(image)
@@ -60,7 +47,7 @@ def user_edit(request):
         image_path = f'/user_image/{image_name}'
     else:
         image_path = ""
-    # print(local_path)
+    
     new_dic = {
         "name": request.data["name"],
         "password": request.data["password"],
@@ -84,8 +71,6 @@ def user_edit(request):
     # image_name = request.data['user_image']
     # file_path = r"C:\Users\Zabir\Desktop\BRAC\471\project\471_Backend\property471\media\user_image"
     # full_path = f"{file_path}\{image_name}"
-
-
     # print(full_path)
     user_val = user.objects.get(user_id = request.data['user_id'])
     user_Serializer = userSerializer(user_val)
