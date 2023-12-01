@@ -14,7 +14,7 @@ class user(models.Model):
     email = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
-
+    wallet = models.CharField(max_length=50, default=1000000)
     session_id = models.CharField(default=-1, max_length=50)
 
     user_image = models.ImageField(
@@ -28,8 +28,8 @@ class user(models.Model):
     # user_image = models.CharField(null=True, max_length=50)
     # def __str__(self):
     #     return f"user_id: {self.user_id}, password: {self.password}"
-    def __str__(self):
-        return self.user_image
+    # def __str__(self):
+    #     return self.user_image
 
 
 class session(models.Model):
@@ -49,6 +49,10 @@ class employee(models.Model):
     email = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
+
+    wallet = models.CharField(max_length=50, default=100)
+    hiring_price = models.CharField(max_length=50, default=20)
+    commission = models.CharField(max_length=50, default=5)
 
     def __str__(self):
         return f"employee_id: {self.employee_id}, password: {self.password}"
