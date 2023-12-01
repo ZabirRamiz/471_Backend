@@ -43,4 +43,6 @@ urlpatterns = [
     path("api/get_data/", include("get_data_app.urls")),
     path("api/edit_access/", include("edit_access_app.urls")),
     path("api/marketplace/", include("marketplace_app.urls")),
+    path("api/payment/", include("payment_app.urls")),
+    path("api/remove/", include("remove_app.urls")),
 ]
