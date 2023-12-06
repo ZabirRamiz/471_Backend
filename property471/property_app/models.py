@@ -19,14 +19,14 @@ class property(models.Model):
         employee,
         to_field="employee_id",
         related_name="property_agent",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
     )
     support_id = models.ForeignKey(
         employee,
         to_field="employee_id",
         related_name="property_support",
-        on_delete=models.CASCADE,
+        on_delete=models.SET_NULL,
         null=True,
     )
 

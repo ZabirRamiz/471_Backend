@@ -17,4 +17,5 @@ urlpatterns = [
     path("single_user", views.single_user),
     path("single_employee", views.single_employee),
     path("single_property", views.single_property),
+    path("needs_admin_approval", views.needs_admin_approval),
 ]

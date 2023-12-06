@@ -42,7 +42,13 @@ class session(models.Model):
 
 
 class employee(models.Model):
-    employee_id = models.CharField(max_length=50, primary_key=True)
+    employee_id = models.ForeignKey(
+        user,
+        to_field="user_id",
+        primary_key=True,
+        on_delete=models.CASCADE,
+        related_name="employee_id",
+    )
     password = models.CharField(max_length=50)
     type = models.CharField(max_length=50)
     name = models.CharField(max_length=50)
