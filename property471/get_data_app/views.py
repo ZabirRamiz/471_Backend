@@ -150,7 +150,9 @@ def single_property(request):
 
 @api_view(["POST"])
 def single_employee(request):
-    single_employee = employee.objects.get(employee_id=f"{request.data['employee_id']}")
+    single_employee = employee.objects.get(
+        employee_id_id=f"{request.data['employee_id']}"
+    )
     single_employee_Serializer = employeeSerializer(single_employee)
 
     return JsonResponse(
@@ -159,4 +161,16 @@ def single_employee(request):
             "data": single_employee_Serializer.data,
         },
         safe=False,
+    )
+
+
+@api_view(["GET"])
+def needs_admin_approval(request):
+    property_val = property.objects.filter(admin_approval="False")
+    property_Serializer = propertySerializer(property_val, many=True)
+    return JsonResponse(
+        {
+            "message": "returns all the properties with admin approval false",
+            "data": property_Serializer.data,
+        }
     )
