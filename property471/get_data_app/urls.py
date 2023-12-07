@@ -17,5 +17,7 @@ urlpatterns = [
     path("single_user", views.single_user),
     path("single_employee", views.single_employee),
     path("single_property", views.single_property),
+    # for payment app
     path("needs_admin_approval", views.needs_admin_approval),
+    path("all_transaction", views.all_transaction),
 ]

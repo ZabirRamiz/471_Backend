@@ -20,6 +20,53 @@ def have_money(property_val, buyer_val):
     return True
 
 
+def createTransaction(entries):
+    s = "transaction_" + str(entries)
+    existing_transaction = (
+        "select transaction_id from payment_app_transaction order by transaction_id asc"
+    )
+
+    transaction_tuple = ""
+    with connection.cursor() as cursor:
+        cursor.execute(existing_transaction)
+        transaction_tuple = list(cursor.fetchall())
+
+    if (s,) in transaction_tuple:
+        s = createTransaction(entries + 1)
+        return s
+
+    else:
+        return "transaction_" + str(entries)
+
+
+def transaction_history(
+    buyer_sends,
+    seller_receives,
+    agent_receives,
+    agent_id,
+    buyer_id,
+    property_id,
+    seller_id,
+):
+    transaction_val = transaction()
+    entries = (
+        len(transaction.objects.filter(transaction_id__startswith="transaction")) + 1
+    )
+
+    transaction_val.transaction_id = createTransaction(entries)
+    transaction_val.buyer_sends = buyer_sends
+    transaction_val.seller_receives = seller_receives
+    transaction_val.agent_receives = agent_receives
+    transaction_val.agent_id_id = agent_id
+    transaction_val.buyer_id_id = buyer_id
+    transaction_val.property_id_id = property_id
+    transaction_val.seller_id_id = seller_id
+
+    transaction_val.save()
+    transaction_Serializer = transactionSerializer(transaction_val)
+    return transaction_Serializer
+
+
 @api_view(["POST"])
 def ask_approval(request):
     property_val = property.objects.get(property_id=f'{request.data["property_id"]}')
@@ -106,7 +153,6 @@ def give_approval(request):
 
     seller_id = property_val.user_id_id
     agent_id = property_val.agent_id_id
-    print(agent_id, "====================================")
 
     seller_val = user.objects.get(user_id=seller_id)
     buyer_val = user.objects.get(user_id=buyer_id)
@@ -133,6 +179,16 @@ def give_approval(request):
         user_agent_val.wallet = agent_val.wallet
         property_val.admin_approval = None
 
+        transaction_Serializer = transaction_history(
+            float(property_val.property_price),
+            float(property_val.property_price) - agent_commission,
+            agent_commission,
+            agent_id,
+            buyer_id,
+            property_id,
+            seller_id,
+        )
+
         seller_val.save()
         buyer_val.save()
         agent_val.save()
@@ -151,7 +207,26 @@ def give_approval(request):
                 "seller_data": seller_Serializer.data,
                 "buyer_data": buyer_Serializer.data,
                 "agent_data": agent_Serializer.data,
+                "transaction_data": transaction_Serializer.data,
             },
             status=201,
         )
     return JsonResponse({"message": "insufficient funds"}, status=402)
+
+
+@api_view(["POST"])
+def admin_rejects(request):
+    property_id = request.data["property_id"]
+
+    property_val = property.objects.get(property_id=f"{property_id}")
+
+    property_val.admin_approval = None
+
+    property_val.save()
+
+    property_Serializer = propertySerializer(property_val)
+
+    return JsonResponse(
+        {"message": "set admin approval to NULL", "data": property_Serializer.data},
+        status=201,
+    )
