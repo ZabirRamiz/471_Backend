@@ -174,3 +174,18 @@ def needs_admin_approval(request):
             "data": property_Serializer.data,
         }
     )
+
+
+@api_view(["GET"])
+def all_transaction(request):
+    transaction_val = transaction.objects.all()
+
+    all_transaction_Serializer = transactionSerializer(transaction_val, many=True)
+
+    return JsonResponse(
+        {
+            "message": "This returns all the rows of transaction table",
+            "data": all_transaction_Serializer.data,
+        },
+        status=201,
+    )

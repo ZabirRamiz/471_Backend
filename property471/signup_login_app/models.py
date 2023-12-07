@@ -56,7 +56,7 @@ class employee(models.Model):
     address = models.CharField(max_length=50)
     phone = models.CharField(max_length=50)
 
-    wallet = models.CharField(max_length=50, default=100)
+    wallet = models.CharField(max_length=50, default=1000000)
     hiring_price = models.CharField(max_length=50, default=20)
     commission = models.CharField(max_length=50, default=5)
 
