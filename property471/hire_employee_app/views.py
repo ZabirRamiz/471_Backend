@@ -59,7 +59,7 @@ def hire_agent(request):
             {"message": "Successfully Hired Agent", "data": property_Serializer.data},
             status=201,
         )
-    return JsonResponse({"message": "lacking sufficient funds"}, status=402)
+    return JsonResponse({"message": "lacking sufficient funds"}, status=202)
 
 
 @api_view(["POST"])
@@ -77,4 +77,4 @@ def hire_support(request):
             {"message": "Successfully Hired Support", "data": property_Serializer.data},
             status=201,
         )
-    return JsonResponse({"message": "lacking sufficient funds"}, status=402)
+    return JsonResponse({"message": "lacking sufficient funds"}, status=202)
