@@ -212,3 +212,21 @@ def give_approval(request):
             status=201,
         )
     return JsonResponse({"message": "insufficient funds"}, status=402)
+
+
+@api_view(["POST"])
+def admin_rejects(request):
+    property_id = request.data["property_id"]
+
+    property_val = property.objects.get(property_id=f"{property_id}")
+
+    property_val.admin_approval = None
+
+    property_val.save()
+
+    property_Serializer = propertySerializer(property_val)
+
+    return JsonResponse(
+        {"message": "set admin approval to NULL", "data": property_Serializer.data},
+        status=201,
+    )

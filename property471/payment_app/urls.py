@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('ask_approval', views.ask_approval),
-    path('give_approval', views.give_approval),
+    path("ask_approval", views.ask_approval),
+    path("give_approval", views.give_approval),
+    path("admin_rejects", views.admin_rejects),
 ]
