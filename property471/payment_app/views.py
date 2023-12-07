@@ -112,43 +112,46 @@ def give_approval(request):
     buyer_val = user.objects.get(user_id=buyer_id)
     agent_val = employee.objects.get(employee_id_id=agent_id)
     user_agent_val = user.objects.get(user_id=agent_id)
+    if have_money(property_val, buyer_val):
+        property_val.admin_approval = True
+        property_val.user_id_id = buyer_id
+        property_val.market_status = "Available For Sale"
+        property_val.agent_id_id = None
+        property_val.support_id_id = None
 
-    property_val.admin_approval = True
-    property_val.user_id_id = buyer_id
-    property_val.market_status = "Available For Sale"
-    property_val.agent_id_id = None
-    property_val.support_id_id = None
+        buyer_val.wallet = float(buyer_val.wallet) - float(property_val.property_price)
+        agent_commission = (
+            float(property_val.property_price) * float(agent_val.commission) / 100
+        )
+        agent_val.wallet = float(agent_val.wallet) + agent_commission
+        seller_val.wallet = (
+            float(seller_val.wallet)
+            + float(property_val.property_price)
+            - agent_commission
+        )
 
-    buyer_val.wallet = float(buyer_val.wallet) - float(property_val.property_price)
-    agent_commission = (
-        float(property_val.property_price) * float(agent_val.commission) / 100
-    )
-    agent_val.wallet = float(agent_val.wallet) + agent_commission
-    seller_val.wallet = (
-        float(seller_val.wallet) + float(property_val.property_price) - agent_commission
-    )
+        user_agent_val.wallet = agent_val.wallet
+        property_val.admin_approval = None
 
-    user_agent_val.wallet = agent_val.wallet
-    property_val.admin_approval = None
+        seller_val.save()
+        buyer_val.save()
+        agent_val.save()
+        property_val.save()
+        user_agent_val.save()
 
-    seller_val.save()
-    buyer_val.save()
-    agent_val.save()
-    property_val.save()
-    user_agent_val.save()
+        seller_Serializer = userSerializer(seller_val)
+        buyer_Serializer = userSerializer(buyer_val)
+        agent_Serializer = employeeSerializer(agent_val)
+        property_Serializer = propertySerializer(property_val)
 
-    seller_Serializer = userSerializer(seller_val)
-    buyer_Serializer = userSerializer(buyer_val)
-    agent_Serializer = employeeSerializer(agent_val)
-    property_Serializer = propertySerializer(property_val)
-
-    return JsonResponse(
-        {
-            "message": "Set admin approval and handled the payments",
-            "property_data": property_Serializer.data,
-            "seller_data": seller_Serializer.data,
-            "buyer_data": buyer_Serializer.data,
-            "agent_data": agent_Serializer.data,
-        },
-        status=201,
-    )
+        return JsonResponse(
+            {
+                "message": "Set admin approval and handled the payments",
+                "property_data": property_Serializer.data,
+                "seller_data": seller_Serializer.data,
+                "buyer_data": buyer_Serializer.data,
+                "agent_data": agent_Serializer.data,
+            },
+            status=201,
+        )
+    return JsonResponse({"message": "insufficient funds"}, status=402)
