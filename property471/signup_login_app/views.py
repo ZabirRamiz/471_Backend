@@ -205,7 +205,7 @@ def create_employee(request):
 
     employee_val = employee()
 
-    employee_val.employee_id = employee_id
+    employee_val.employee_id_id = employee_id
     employee_val.name = request.data["name"]
     employee_val.password = request.data["password"]
     employee_val.type = request.data["type"]

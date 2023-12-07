@@ -33,7 +33,7 @@ def user_edit(request):
         "user_image": info.user_image,
         "user_image_path": info.user_image_path,
     }
-    
+
     try:
         image = request.FILES["user_image"]
     except:
@@ -43,10 +43,10 @@ def user_edit(request):
         print("------------------------------")
         print(image)
         image_name = image.name
-        image_path = f'/user_image/{image_name}'
+        image_path = f"/user_image/{image_name}"
     else:
         image_path = ""
-    
+
     new_dic = {
         "name": request.data["name"],
         "password": request.data["password"],
@@ -54,11 +54,18 @@ def user_edit(request):
         "address": request.data["address"],
         "phone": request.data["phone"],
         "user_image": request.data["user_image"],
-        "user_image_path" : image_path
-        
+        "user_image_path": image_path,
     }
 
-    attributes_to_check = ["name", "password", "email", "address", "phone", "user_image", "user_image_path"]
+    attributes_to_check = [
+        "name",
+        "password",
+        "email",
+        "address",
+        "phone",
+        "user_image",
+        "user_image_path",
+    ]
 
     for attribute in attributes_to_check:
         if new_dic[f"{attribute}"] == "":
@@ -71,15 +78,17 @@ def user_edit(request):
     # file_path = r"C:\Users\Zabir\Desktop\BRAC\471\project\471_Backend\property471\media\user_image"
     # full_path = f"{file_path}\{image_name}"
     # print(full_path)
-    user_val = user.objects.get(user_id = request.data['user_id'])
+    user_val = user.objects.get(user_id=request.data["user_id"])
     user_Serializer = userSerializer(user_val)
- 
-    return JsonResponse({"message": "edit success", 'data': user_Serializer.data}, status=201)
+
+    return JsonResponse(
+        {"message": "edit success", "data": user_Serializer.data}, status=201
+    )
 
 
 @api_view(["POST"])
 def employee_edit(request):
-    info = employee.objects.get(employee_id=request.data["user_id"])
+    info = employee.objects.get(employee_id_id=request.data["user_id"])
     old_dic = {
         "name": info.name,
         "password": info.password,
@@ -87,18 +96,14 @@ def employee_edit(request):
         "address": info.address,
         "phone": info.phone,
         "email": info.email,
-        
     }
-    
-    
+
     new_dic = {
         "name": request.data["name"],
         "password": request.data["password"],
         "email": request.data["email"],
         "address": request.data["address"],
         "phone": request.data["phone"],
-
-        
     }
 
     attributes_to_check = ["name", "password", "email", "address", "phone"]
@@ -108,12 +113,12 @@ def employee_edit(request):
             setattr(info, attribute, old_dic[f"{attribute}"])
         else:
             setattr(info, attribute, new_dic[f"{attribute}"])
-    
+
     employee.save(info)
-    
-    employee_val=employee.objects.get(employee_id=f"{request.data['user_id']}")
-    employee_Serializer=employeeSerializer(employee_val)
-    
+
+    employee_val = employee.objects.get(employee_id_id=f"{request.data['user_id']}")
+    employee_Serializer = employeeSerializer(employee_val)
+
     info = user.objects.get(user_id=request.data["user_id"])
     old_dic = {
         "name": info.name,
@@ -124,7 +129,7 @@ def employee_edit(request):
         "user_image": info.user_image,
         "user_image_path": info.user_image_path,
     }
-    
+
     try:
         image = request.FILES["user_image"]
     except:
@@ -134,10 +139,10 @@ def employee_edit(request):
         print("------------------------------")
         print(image)
         image_name = image.name
-        image_path = f'/user_image/{image_name}'
+        image_path = f"/user_image/{image_name}"
     else:
         image_path = ""
-    
+
     new_dic = {
         "name": request.data["name"],
         "password": request.data["password"],
@@ -145,11 +150,18 @@ def employee_edit(request):
         "address": request.data["address"],
         "phone": request.data["phone"],
         "user_image": request.data["user_image"],
-        "user_image_path" : image_path
-        
+        "user_image_path": image_path,
     }
 
-    attributes_to_check = ["name", "password", "email", "address", "phone", "user_image", "user_image_path"]
+    attributes_to_check = [
+        "name",
+        "password",
+        "email",
+        "address",
+        "phone",
+        "user_image",
+        "user_image_path",
+    ]
 
     for attribute in attributes_to_check:
         if new_dic[f"{attribute}"] == "":
@@ -158,8 +170,15 @@ def employee_edit(request):
             setattr(info, attribute, new_dic[f"{attribute}"])
 
     user.save(info)
-  
-    user_val = user.objects.get(user_id = request.data['user_id'])
+
+    user_val = user.objects.get(user_id=request.data["user_id"])
     user_Serializer = userSerializer(user_val)
-    
-    return JsonResponse({"message": "edit success", 'employee_data': employee_Serializer.data,"data":user_Serializer.data}, status=201)
+
+    return JsonResponse(
+        {
+            "message": "edit success",
+            "employee_data": employee_Serializer.data,
+            "data": user_Serializer.data,
+        },
+        status=201,
+    )
