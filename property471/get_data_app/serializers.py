@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from payment_app.serializers import transactionSerializer
 
 
 class userSerializer(serializers.ModelSerializer):

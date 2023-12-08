@@ -52,7 +52,7 @@ def remove_property(request):
                 "message": "remove employee(s) to remove property",
                 "data": property_Serializer.data,
             },
-            status=402,
+            status=202,
         )
 
     property_val.delete()
@@ -72,4 +72,16 @@ def delete_employee(request):
 
     return JsonResponse(
         {"message": f"successfully deleted employee- {employee_id}"}, status=201
+    )
+
+
+@api_view(["POST"])
+def delete_user(request):
+    user_id = request.data["user_id"]
+
+    user_val = user.objects.get(user_id=user_id)
+    user_val.delete()
+
+    return JsonResponse(
+        {"message": f"successfully deleted user- {user_id}"}, status=201
     )
