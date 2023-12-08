@@ -52,7 +52,7 @@ def remove_property(request):
                 "message": "remove employee(s) to remove property",
                 "data": property_Serializer.data,
             },
-            status=402,
+            status=202,
         )
 
     property_val.delete()

@@ -211,7 +211,7 @@ def give_approval(request):
             },
             status=201,
         )
-    return JsonResponse({"message": "insufficient funds"}, status=402)
+    return JsonResponse({"message": "insufficient funds"}, status=202)
 
 
 @api_view(["POST"])
