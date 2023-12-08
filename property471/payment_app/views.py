@@ -165,6 +165,7 @@ def give_approval(request):
         property_val.market_status = "Available For Sale"
         property_val.agent_id_id = None
         property_val.support_id_id = None
+        property_val.buyer_id_id = None
 
         buyer_val.wallet = float(buyer_val.wallet) - float(property_val.property_price)
         agent_commission = (
