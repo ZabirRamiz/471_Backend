@@ -15,7 +15,10 @@ from .serializers import *
 
 # Create your views here.
 def have_money(property_val, buyer_val):
-    if float(property_val.property_price) > float(buyer_val.wallet):
+    first_check = float(property_val.property_price)
+    admin_receives = first_check * 0.1
+    second_check = first_check + float(admin_receives)
+    if second_check > float(buyer_val.wallet):
         return False
     return True
 
@@ -78,6 +81,7 @@ def admin_earning_history(property_id, user_id, earning_amount, earning_from):
 def transaction_history(
     buyer_sends,
     seller_receives,
+    admin_receives,
     agent_receives,
     agent_id,
     buyer_id,
@@ -93,6 +97,7 @@ def transaction_history(
     transaction_val.buyer_sends = buyer_sends
     transaction_val.seller_receives = seller_receives
     transaction_val.agent_receives = agent_receives
+    transaction_val.admin_receives = admin_receives
     transaction_val.agent_id = agent_id
     transaction_val.buyer_id = buyer_id
     transaction_val.property_id = property_id
@@ -148,7 +153,13 @@ def give_approval(request):
         property_val.support_id_id = None
         property_val.buyer_id_id = None
 
-        buyer_val.wallet = float(buyer_val.wallet) - float(property_val.property_price)
+        admin_earning_amount = float(property_val.property_price) * 0.1
+
+        buyer_val.wallet = (
+            float(buyer_val.wallet)
+            - float(property_val.property_price)
+            - admin_earning_amount
+        )
         agent_commission = (
             float(property_val.property_price) * float(agent_val.commission) / 100
         )
@@ -163,13 +174,21 @@ def give_approval(request):
         property_val.admin_approval = None
 
         transaction_Serializer = transaction_history(
-            float(property_val.property_price),
+            float(property_val.property_price) + admin_earning_amount,
             float(property_val.property_price) - agent_commission,
+            admin_earning_amount,
             agent_commission,
             agent_id,
             buyer_id,
             property_id,
             seller_id,
+        )
+
+        adminearning_Serializer = admin_earning_history(
+            property_id,
+            buyer_id,
+            admin_earning_amount,
+            "Commission from Transaction 10%",
         )
 
         seller_val.save()
@@ -191,6 +210,7 @@ def give_approval(request):
                 "buyer_data": buyer_Serializer.data,
                 "agent_data": agent_Serializer.data,
                 "transaction_data": transaction_Serializer.data,
+                "admin_earning_data": adminearning_Serializer.data,
             },
             status=201,
         )

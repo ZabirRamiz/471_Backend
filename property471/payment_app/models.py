@@ -15,6 +15,7 @@ class transaction(models.Model):
     buyer_sends = models.CharField(max_length=50)
     seller_receives = models.CharField(max_length=50)
     agent_receives = models.CharField(max_length=50)
+    admin_receives = models.CharField(max_length=50)
 
 
 class admin_earning(models.Model):
