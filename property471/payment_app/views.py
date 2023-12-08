@@ -39,6 +39,42 @@ def createTransaction(entries):
         return "transaction_" + str(entries)
 
 
+def createEarning(entries):
+    s = "earning_" + str(entries)
+    existing_earning = (
+        "select earning_id from payment_app_admin_earning order by earning_id asc"
+    )
+
+    earning_tuple = ""
+    with connection.cursor() as cursor:
+        cursor.execute(existing_earning)
+        earning_tuple = list(cursor.fetchall())
+
+    if (s,) in earning_tuple:
+        s = createEarning(entries + 1)
+        return s
+
+    else:
+        return "earning_" + str(entries)
+
+
+def admin_earning_history(property_id, user_id, earning_amount, earning_from):
+    admin_earning_val = admin_earning()
+    entries = len(admin_earning.objects.filter(earning_id__startswith="earning")) + 1
+
+    admin_earning_val.earning_id = createEarning(entries)
+    admin_earning_val.property_id = property_id
+    admin_earning_val.user_id = user_id
+    admin_earning_val.earning_amount = earning_amount
+    admin_earning_val.earning_from = earning_from
+
+    admin_earning_val.save()
+
+    adminearning_Serializer = adminearningSerializer(admin_earning_val)
+
+    return adminearning_Serializer
+
+
 def transaction_history(
     buyer_sends,
     seller_receives,
