@@ -36,6 +36,13 @@ class property(models.Model):
     property_name = models.CharField(max_length=50)
     property_price = models.CharField(max_length=50)
     admin_approval = models.CharField(max_length=50, null=True)
+    buyer_id = models.ForeignKey(
+        user,
+        to_field="user_id",
+        related_name="property_buyer",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
 
     # def __str__(self):
     #     return f"property_id = {self.property_id}, owner_id = {self.owner_id}, agent_id = {self.agent_id}, support_id = {self.support_id}"

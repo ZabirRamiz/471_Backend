@@ -73,6 +73,7 @@ def ask_approval(request):
     buyer_val = user.objects.get(user_id=f"{request.data['buyer_id']}")
     if have_money(property_val, buyer_val):
         property_val.admin_approval = "False"
+        property_val.buyer_id_id = request.data["buyer_id"]
         property.save(property_val)
 
         property_Serializer = propertySerializer(property_val)
