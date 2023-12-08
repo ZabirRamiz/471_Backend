@@ -65,6 +65,9 @@ def admin_earning_history(property_id, user_id, earning_amount, earning_from):
     admin_earning_val = admin_earning()
     entries = len(admin_earning.objects.filter(earning_id__startswith="earning")) + 1
 
+    admin_val = user.objects.get(type="admin")
+    admin_val.wallet = float(admin_val.wallet) + earning_amount
+
     admin_earning_val.earning_id = createEarning(entries)
     admin_earning_val.property_id = property_id
     admin_earning_val.user_id = user_id
@@ -72,7 +75,7 @@ def admin_earning_history(property_id, user_id, earning_amount, earning_from):
     admin_earning_val.earning_from = earning_from
 
     admin_earning_val.save()
-
+    admin_val.save()
     adminearning_Serializer = adminearningSerializer(admin_earning_val)
 
     return adminearning_Serializer
@@ -144,6 +147,7 @@ def give_approval(request):
     seller_val = user.objects.get(user_id=seller_id)
     buyer_val = user.objects.get(user_id=buyer_id)
     agent_val = employee.objects.get(employee_id_id=agent_id)
+
     user_agent_val = user.objects.get(user_id=agent_id)
     if have_money(property_val, buyer_val):
         property_val.admin_approval = True

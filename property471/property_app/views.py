@@ -46,8 +46,8 @@ def create_property(request):
     entries = len(property.objects.filter(property_id__startswith="property")) + 1
 
     user_id = request.data["user_id"]
-    user_val = user.objects.get(user_id=user_id)
-    admin_val = user.objects.get(type="admin")
+    print(user_id)
+    user_val = user.objects.get(user_id=f"{user_id}")
 
     property_val.property_id = createProperty(entries)
     property_val.user_id = assign_owner(user_id)
@@ -59,8 +59,9 @@ def create_property(request):
     platform_fee = float(request.data["property_price"]) * 0.05
 
     if float(platform_fee) < float(user_val.wallet):
-        admin_val.wallet = float(admin_val.wallet) + platform_fee
+        print(user_val.wallet)
         user_val.wallet = float(user_val.wallet) - platform_fee
+        print(user_val.wallet)
         # admin_earning_val = admin_earning()
         admin_earning_property_id = property_val.property_id
         admin_earning_user_id = user_id
@@ -68,11 +69,11 @@ def create_property(request):
         admin_earning_earning_from = "Platform Fee 5%"
 
         # admin_earning_val.save()
-        admin_val.save()
+
         property_val.save()
         user_val.save()
         property_Serializer = propertySerializer(property_val)
-        admin_Serializer = userSerializer(admin_val)
+
         adminearning_Serializer = admin_earning_history(
             admin_earning_property_id,
             admin_earning_user_id,
@@ -83,7 +84,6 @@ def create_property(request):
             {
                 "message": "Property Created",
                 "data": property_Serializer.data,
-                "admin_data": admin_Serializer.data,
                 "adming_earning_data": adminearning_Serializer.data,
             },
             status=201,
