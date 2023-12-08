@@ -62,13 +62,11 @@ def create_property(request):
         print(user_val.wallet)
         user_val.wallet = float(user_val.wallet) - platform_fee
         print(user_val.wallet)
-        # admin_earning_val = admin_earning()
+
         admin_earning_property_id = property_val.property_id
         admin_earning_user_id = user_id
         admin_earning_earning_amount = platform_fee
         admin_earning_earning_from = "Platform Fee 5%"
-
-        # admin_earning_val.save()
 
         property_val.save()
         user_val.save()
