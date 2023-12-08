@@ -70,7 +70,7 @@ def create_property(request):
         # admin_earning_val.save()
         admin_val.save()
         property_val.save()
-        user_val.save
+        user_val.save()
         property_Serializer = propertySerializer(property_val)
         admin_Serializer = userSerializer(admin_val)
         adminearning_Serializer = admin_earning_history(
