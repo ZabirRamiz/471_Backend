@@ -46,7 +46,8 @@ def create_property(request):
     entries = len(property.objects.filter(property_id__startswith="property")) + 1
 
     user_id = request.data["user_id"]
-    user_val = user.objects.get(user_id=user_id)
+    print(user_id)
+    user_val = user.objects.get(user_id=f"{user_id}")
     admin_val = user.objects.get(type="admin")
 
     property_val.property_id = createProperty(entries)
@@ -60,7 +61,9 @@ def create_property(request):
 
     if float(platform_fee) < float(user_val.wallet):
         admin_val.wallet = float(admin_val.wallet) + platform_fee
+        print(user_val.wallet)
         user_val.wallet = float(user_val.wallet) - platform_fee
+        print(user_val.wallet)
         # admin_earning_val = admin_earning()
         admin_earning_property_id = property_val.property_id
         admin_earning_user_id = user_id
@@ -70,7 +73,7 @@ def create_property(request):
         # admin_earning_val.save()
         admin_val.save()
         property_val.save()
-        user_val.save
+        user_val.save()
         property_Serializer = propertySerializer(property_val)
         admin_Serializer = userSerializer(admin_val)
         adminearning_Serializer = admin_earning_history(
