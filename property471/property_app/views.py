@@ -60,7 +60,7 @@ def create_property(request):
 
     if float(platform_fee) < float(user_val.wallet):
         admin_val.wallet = float(admin_val.wallet) + platform_fee
-
+        user_val.wallet = float(user_val.wallet) - platform_fee
         # admin_earning_val = admin_earning()
         admin_earning_property_id = property_val.property_id
         admin_earning_user_id = user_id
@@ -70,6 +70,7 @@ def create_property(request):
         # admin_earning_val.save()
         admin_val.save()
         property_val.save()
+        user_val.save
         property_Serializer = propertySerializer(property_val)
         admin_Serializer = userSerializer(admin_val)
         adminearning_Serializer = admin_earning_history(
