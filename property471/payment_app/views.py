@@ -57,10 +57,10 @@ def transaction_history(
     transaction_val.buyer_sends = buyer_sends
     transaction_val.seller_receives = seller_receives
     transaction_val.agent_receives = agent_receives
-    transaction_val.agent_id_id = agent_id
-    transaction_val.buyer_id_id = buyer_id
-    transaction_val.property_id_id = property_id
-    transaction_val.seller_id_id = seller_id
+    transaction_val.agent_id = agent_id
+    transaction_val.buyer_id = buyer_id
+    transaction_val.property_id = property_id
+    transaction_val.seller_id = seller_id
 
     transaction_val.save()
     transaction_Serializer = transactionSerializer(transaction_val)
