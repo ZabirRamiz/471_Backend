@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import *
-from payment_app.serializers import transactionSerializer
+from payment_app.serializers import transactionSerializer, adminearningSerializer
 
 
 class userSerializer(serializers.ModelSerializer):

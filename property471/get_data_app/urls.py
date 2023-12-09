@@ -6,6 +6,7 @@ urlpatterns = [
     path("user_data", views.user_data),
     path("employee_data", views.employee_data),
     path("property_data", views.property_data),
+    path("admin_earning_data", views.admin_earning_data),
     # all users/agents/supports data from user table
     path("only_user_data", views.only_user_data),
     path("only_agent_data", views.only_agent_data),

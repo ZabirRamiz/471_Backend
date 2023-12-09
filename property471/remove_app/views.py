@@ -73,3 +73,15 @@ def delete_employee(request):
     return JsonResponse(
         {"message": f"successfully deleted employee- {employee_id}"}, status=201
     )
+
+
+@api_view(["POST"])
+def delete_user(request):
+    user_id = request.data["user_id"]
+
+    user_val = user.objects.get(user_id=user_id)
+    user_val.delete()
+
+    return JsonResponse(
+        {"message": f"successfully deleted user- {user_id}"}, status=201
+    )
