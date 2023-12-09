@@ -61,6 +61,21 @@ def employee_data(request):
 
 
 @api_view(["GET"])
+def admin_earning_data(request):
+    all_earning = admin_earning.objects.all()
+
+    admin_earning_Serializer = adminearningSerializer(all_earning, many=True)
+
+    return JsonResponse(
+        {
+            "message": "This contains all the data of the admin_earning table",
+            "data": admin_earning_Serializer.data,
+        },
+        safe=False,
+    )
+
+
+@api_view(["GET"])
 def only_user_data(request):
     only_users = user.objects.filter(type="user")
 
