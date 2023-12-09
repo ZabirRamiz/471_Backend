@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     "edit_access_app",
     "marketplace_app",
     "payment_app",
-    "remove_app"
+    "remove_app",
 ]
 
 MIDDLEWARE = [
@@ -135,10 +135,10 @@ USE_TZ = True
 STATIC_URL = "static/"
 
 # C:\Users\Zabir\Desktop\BRAC\471\project\471_Frontend\property471\public
-MEDIA_URL ='/media/'
+MEDIA_URL = "/media/"
 # MEDIA_ROOT = BASE_DIR / '471_Frontend/property471/public/media'
 # MEDIA_ROOT = BASE_DIR / 'media'
-MEDIA_ROOT = r'D:\Nafisa\471_Frontend\property471\public'
+MEDIA_ROOT = r"C:\Users\Zabir\Desktop\BRAC\471\project\471_Frontend\property471\public"
 # MEDIA_ROOT = '471_Frontend.property471.media'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
